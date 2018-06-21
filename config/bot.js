@@ -6,7 +6,7 @@
  *
  */
 
- 
+require('dotenv').load()
 var watson = require('watson-developer-cloud');
 var CONVERSATION_NAME = "Conversation-Demo"; // conversation name goes here.
 var fs = require('fs');
@@ -18,66 +18,66 @@ var conversationWorkspace, conversation;
 // CREATE THE SERVICE WRAPPER ==========
 // =====================================
 // Create the service wrapper
-    conversation = watson.conversation({
-        url: "https://gateway.watsonplatform.net/conversation/api"
-        , username: "<username>"
-        , password: "<password>"
-        , version_date: '2017-04-10'
-        , version: 'v1'
-    });
-    // check if the workspace ID is specified in the environment
-    conversationWorkspace = "<workspace_id>";
-    // if not, look it up by name or create one
+conversation = watson.conversation({
+    url: "https://gateway.watsonplatform.net/conversation/api"
+    , username: process.env.USERNAME
+    , password: process.env.PASSWORD
+    , version_date: '2017-04-10'
+    , version: 'v1'
+});
+// check if the workspace ID is specified in the environment
+conversationWorkspace = process.env.WORKSPACE_ID;
+// if not, look it up by name or create one
 // Allow clients to interact
 
 var chatbot = {
     sendMessage: function (req, callback) {
-//        var owner = req.user.username;
+        //        var owner = req.user.username;
         buildContextObject(req, function (err, params) {
-                if (err) {
-                    console.log("Error in building the parameters object: ", err);
-                    return callback(err);
-                }
-                if (params.message) {
-                    var conv = req.body.context.conversation_id;
-                    var context = req.body.context;
-                    var res = {
-                        intents: []
-                        , entities: []
-                        , input: req.body.text
-                        , output: {
-                            text: params.message
-                        }
-                        , context: context
-                    };
-                    //                chatLogs(owner, conv, res, () => {
-                    //                    return 
-                    callback(null, res);
-                    //                });
-                }
-                else if (params) {
-                    // Send message to the conversation service with the current context
-                    conversation.message(params, function (err, data) {
-                            if (err) {
-                                console.log("Error in sending message: ", err);
-                                return callback(err);
-                            }else{
-                                
-                            var conv = data.context.conversation_id;
-                            console.log("Got response from Ana: ", JSON.stringify(data));
-//                            if (data.context.system.dialog_turn_counter > 1) {
-//                                chatLogs(owner, conv, data, () => {
-//                                    return callback(null, data);
-//                                });
-//                            }
-//                            else {
-                                return callback(null, data);
-//                            }
-                        }
-                    });
+            if (err) {
+                console.log("Error in building the parameters object: ", err);
+                return callback(err);
+            }
+            if (params.message) {
+                var conv = req.body.context.conversation_id;
+                var context = req.body.context;
+                var res = {
+                    intents: []
+                    , entities: []
+                    , input: req.body.text
+                    , output: {
+                        text: params.message
+                    }
+                    , context: context
+                };
+                //                chatLogs(owner, conv, res, () => {
+                //                    return
+                callback(null, res);
+                //                });
+            }
+            else if (params) {
+                // Send message to the conversation service with the current context
+                conversation.message(params, function (err, data) {
+                    if (err) {
+                        console.log("Error in sending message: ", err);
+                        return callback(err);
+                    } else {
+
+                        var conv = data.context.conversation_id;
+                        console.log("Got response from Ana: ", JSON.stringify(data));
+                        //                            if (data.context.system.dialog_turn_counter > 1) {
+                        //                                chatLogs(owner, conv, data, () => {
+                        //                                    return callback(null, data);
+                        //                                });
+                        //                            }
+                        //                            else {
+                        return callback(null, data);
+                        //                            }
+                    }
+                });
             }
         });
-}
+    }
 };
 // ===============================================
 // LOG MANAGEMENT FOR USER INPUT FOR ANA =========
@@ -90,7 +90,8 @@ function chatLogs(owner, conversation, response, callback) {
         , responseText: ''
         , entities: {}
         , intents: {}
-    , };
+        ,
+    };
     logFile.inputText = response.input.text;
     logFile.responseText = response.output.text;
     logFile.entities = response.entities;
@@ -159,7 +160,7 @@ function chatLogs(owner, conversation, response, callback) {
  */
 function buildContextObject(req, callback) {
     var message = req.body.text;
-//    var userTime = req.body.user_time;
+    //    var userTime = req.body.user_time;
     var context;
     if (!message) {
         message = '';
@@ -171,7 +172,7 @@ function buildContextObject(req, callback) {
         , context: {}
     };
 
-    
+
     if (req.body.context) {
         context = req.body.context;
         params.context = context;
@@ -184,12 +185,12 @@ function buildContextObject(req, callback) {
         text: message // User defined text to be sent to service
     };
     // This is the first message, add the user's name and get their healthcare object
-//    if ((!message || message === '') && !context) {
-//        params.context = {
-//            fname: req.user.fname
-//            , lname: req.user.lname
-//        };
-//    }
+    //    if ((!message || message === '') && !context) {
+    //        params.context = {
+    //            fname: req.user.fname
+    //            , lname: req.user.lname
+    //        };
+    //    }
     return callback(null, params);
 }
 module.exports = chatbot;

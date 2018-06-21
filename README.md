@@ -1,24 +1,32 @@
-# Exemplo de Chatbot com Watson Conversation em Node.js
+# Exemplo de Chatbot com Watson Assistant em Node.js
 
-Este aplicação é um demo de cliente de Chatbot em Node.js que utiliza Watson Conversation. Basta criar um conversation, colocar as credenciais neste app e fazer o deploy no Bluemix. (Exemplo de criação de Watson Conversation no arquivo: https://github.com/sergiogama/chatbot/blob/master/TUTORIAL%20ChatBot.pdf).
+Este aplicação é uma demo de Front End de chatbot em Node.js que utiliza a API de Watson Assistant. Basta criar uma instância do Watson Assistant na [IBM Cloud](https://console.bluemix.net), colocar as credenciais neste app e fazer o deploy.
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/sergiogama/chatbot)
+[Neste link](https://medium.com/botsbrasil/desenvolvendo-chatbots-com-watson-conversation-64a3b2cdbb30) você encontra um tutorial de como criar um chatbot usando o Watson Assistant
 
-OU
+## Deploy no IBM Cloud
 
-## Para executar o app localmente
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/victorshinya/pizza)
 
-1. [Instalar Node.js][]
-+ cd no diret'roio raiz do projeto
-+ Execute `npm install` para instalar as dependências do app
-+ Altere o aquivo config/bot.js e coloque as credenciais e workspace_id do conversation nas lilnhas à seguir:
-    
-    username = "<username>";
-    password = "<password>";
-    conversationWorkspace = "<workspace_id>";
+## Executar o app localmente
 
-+ Execute `npm start` para o iniciar o app
-+ Acesse a aplicação no browser no link <http://localhost:6001>
+1. Instalar [Node.js](https:/nodejs.org/) no seu computador.
 
-[Instale Node.js]: https://nodejs.org/en/download/
-"# Conversation-demo" 
+2. Acessar a pasta do projeto
+```bash
+cd chatbot
+```
+
+3. Execute o comando abaixo para instalar as dependências do app
+```node
+npm install
+```
+
+4. Altere o arquivo **.env** e coloque as credenciais do Watson Assistant, **username** e **password**, e o workspace_id
+
+5. Execute o comando abaixo para subir o servidor Node.js
+```node
+npm start
+```
+
+6. Acesse a aplicação no seu navegador no link http://localhost:3000/
