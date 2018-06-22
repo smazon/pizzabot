@@ -1,7 +1,6 @@
 {
-    "name": "cloudant_boilerplate_nodejs",
-    "version": "0.0.2",
-    "private": true,
+    "name": "pizza-app",
+    "version": "1.0.0",
     "scripts": {
         "start": "node app.js"
     },
@@ -19,8 +18,7 @@
         "dotenv": "*",
         "chrono-node": "*"
     },
-    "repository": {},
     "engines": {
-        "node": "4.x"
+        "node": "10.5.0"
     }
 }
